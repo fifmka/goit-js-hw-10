@@ -1,21 +1,21 @@
 import './css/styles.css';
 import debounce from 'lodash.debounce';
-const DEBOUNCE_DELAY = 300;
+const DEBOUNCE_DELAY = 1000;
 
 const input = document.querySelector('#search-box');
 const list = document.querySelector('.country-list');
 const countryInfo = document.querySelector('.country-info');
 
-input.addEventListener('input', inputSearch);
+input.addEventListener('input', debounce(inputSearch, DEBOUNCE_DELAY));
 
 function inputSearch(event) {
-  const searchName = input.value.trim();
+  const searchName = event.target.value.trim();
 
   fetchCountries(searchName).then(countries => {
     if (countries.length === 1) {
-      createMarkUpCountryInfo();
+      createMarkUpCountryInfo(countries);
     } else if (countries.length >= 2 && countries.length < 10) {
-      createMarkUpList();
+      createMarkUpList(countries);
     } else {
       alert('Too many matches found. Please enter a more specific name.');
     }
@@ -36,22 +36,22 @@ function fetchCountries(name) {
 function createMarkUpList(countries) {
   let markUpList = countries
     .map(
-      ({ name, flag }) =>
-        `<li class="country-list__short-info"><img class="flag" src="${flag.svg}" alt="${name.official}">${name.official}</li> `
+      ({ name, flags }) =>
+        `<li class="country-list__short-info"><img class="flag" src="${flags.svg}" alt="${name.official}">${name.official}</li> `
     )
     .join('');
-  countryInfo.insertAdjacentHTML('afterbegin', markUpList);
+  list.insertAdjacentHTML('afterbegin', markUpList);
 }
 
 function createMarkUpCountryInfo(countries) {
   let markUp = countries
-    .map(({ name, flag, capital, population }) => {
-      `<img class="flag" src="${flag.svg}" alt="${name.official}">
+    .map(({ name, flags, capital, population }) => {
+      `<img class="flag" src="${flags.svg}" alt="${name.official}">
         <p class="name">${name.official}</p>
         <p class="capital">Capital: ${capital} </p>
         <p class="population">Population: ${population}</p>
         <p class="languages">languages:${languages} </p>`;
     })
     .join('');
-  list.insertAdjacentHTML('afterbegin', markUp);
+  countryInfo.insertAdjacentHTML('afterbegin', markUp);
 }

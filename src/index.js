@@ -28,6 +28,8 @@ function inputSearch(event) {
         countryInfo.innerHTML = '';
         createMarkUpList(countries);
       } else {
+        list.innerHTML = '';
+        countryInfo.innerHTML = '';
         Notiflix.Notify.info(
           'Too many matches found. Please enter a more specific name.'
         );

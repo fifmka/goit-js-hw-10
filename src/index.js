@@ -33,9 +33,11 @@ function inputSearch(event) {
         );
       }
     })
-    .catch(error =>
-      Notiflix.Notify.failure('Oops, there is no country with that name')
-    );
+    .catch(error => {
+      list.innerHTML = '';
+      countryInfo.innerHTML = '';
+      Notiflix.Notify.failure('Oops, there is no country with that name');
+    });
 }
 
 function createMarkUpList(countries = []) {
@@ -48,7 +50,7 @@ function createMarkUpList(countries = []) {
   list.insertAdjacentHTML('afterbegin', markUpList);
 }
 
-function createMarkUpCountryInfo(countries=[]) {
+function createMarkUpCountryInfo(countries = []) {
   let markUp = countries
     .map(
       ({

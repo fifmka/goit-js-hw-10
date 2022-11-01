@@ -48,7 +48,7 @@ function createMarkUpList(countries = []) {
   list.insertAdjacentHTML('afterbegin', markUpList);
 }
 
-function createMarkUpCountryInfo(countries) {
+function createMarkUpCountryInfo(countries=[]) {
   let markUp = countries
     .map(
       ({
